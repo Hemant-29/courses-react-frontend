@@ -1,19 +1,20 @@
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js image
 FROM node:18-alpine
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy only the package.json and package-lock.json first for caching
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code to the working directory
+# Copy the rest of the application
 COPY . .
 
+# Expose the port the app will run on
 EXPOSE 3000
 
-# Command to run the application
+# Run the app
 CMD ["npm", "run", "dev"]
