@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import Navbar from "./components/Navbar";
+import ListCourses from "./components/CoursesList";
+import ListInstances from "./components/InstancesList";
 
 const url = "http://127.0.0.1:8000/api/courses/";
 
@@ -22,26 +25,14 @@ function App() {
         console.log("fetched data:", fetched_data);
       });
   }, []);
-  // Empty dependency array
-
-  // Log courses_data in useEffect to see when it updates
-  useEffect(() => {
-    console.log("Courses data:", courses_data);
-  }, [courses_data]);
+  // Execute this effect on startup
 
   return (
     <>
-      <h1>Hello World from React!</h1>
-      <h2>Accessing API from backend:</h2>
-      <div>
-        {courses_data.map((element, index) => (
-          <ul key={index}>
-            <li>{element.title || "No title available"}</li>
-            <li>{element.course_code || "No course code available"}</li>
-            <li>{element.description || "No description available"}</li>
-          </ul>
-        ))}
-      </div>
+      <Navbar></Navbar>
+      <main>
+        <ListCourses courses_data={courses_data}></ListCourses>
+      </main>
     </>
   );
 }
