@@ -2,7 +2,63 @@ import { useState, useEffect } from "react";
 import "./courses_list.css";
 
 function ListCourses(props) {
-  console.log("props", props);
+  const [courses_data, set_courses_data] = useState([]);
+
+  function fetchCourses() {
+    const url = "http://127.0.0.1:8000/api/courses/";
+    fetch(url)
+      .then((res) => {
+        if (res.ok) {
+          console.log("response ok!");
+          return res.json();
+        } else {
+          throw new Error("response was not ok.");
+        }
+      })
+      .then((data) => {
+        set_courses_data(data);
+      });
+  }
+
+  function openCourseDetail(courseID) {
+    const url = `http://127.0.0.1:8000/api/courses/${courseID}/`;
+    fetch(url, { method: "GET" })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Can't Open Course Details");
+        }
+      })
+      .then((data) => {
+        props.stateFunc(
+          {
+            title: data.title,
+            description: data.description,
+            course_code: data.course_code,
+          },
+          courseID
+        );
+      });
+  }
+
+  function deleteCourse(course_id) {
+    const url = `http://127.0.0.1:8000/api/courses/${course_id}/`;
+    fetch(url, { method: "DELETE" }).then((res) => {
+      if (res.status == 204) {
+        console.log("Course Deleted!");
+        fetchCourses();
+      } else {
+        throw new Error("Course can't be deleted");
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+  // Execute this effect on startup
+
   return (
     <>
       <h2>Available Courses:</h2>
@@ -12,12 +68,17 @@ function ListCourses(props) {
           <li>Course Code</li>
           <li>Action</li>
         </ul>
-        {props.courses_data.map((element, index) => (
+        {courses_data.map((element, index) => (
           <ul key={index} className="table_entries">
             <li>{element.title || "No title available"}</li>
             <li>{element.course_code || "No course code available"}</li>
             <li id="table_action">
-              <a href="">
+              <button
+                onClick={() => {
+                  openCourseDetail(element.id);
+                }}
+                id="course_details"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -35,8 +96,14 @@ function ListCourses(props) {
                     d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"
                   />
                 </svg>
-              </a>
-              <button>
+              </button>
+              <button
+                onClick={() => {
+                  deleteCourse(element.id);
+                }}
+                id="delete_course"
+                name={element.id}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -53,13 +120,6 @@ function ListCourses(props) {
           </ul>
         ))}
       </div>
-      <h2>Add Course: </h2>
-      <form action="" className="course_form">
-        <input type="text" name="title" placeholder="Course Title" />
-        <input type="text" name="title" placeholder="Course Code" />
-        <input type="text" name="title" placeholder="Course Description" />
-        <button type="submit">Add Course</button>
-      </form>
     </>
   );
 }

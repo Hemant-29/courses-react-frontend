@@ -3,35 +3,36 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import ListCourses from "./components/CoursesList";
 import ListInstances from "./components/InstancesList";
-
-const url = "http://127.0.0.1:8000/api/courses/";
+import AddCourse from "./components/AddCourse";
+import CourseDetail from "./components/CourseDetail";
 
 function App() {
-  const [courses_data, set_courses_data] = useState([]);
+  const [courseDetails, setcourseDetails] = useState({
+    id: null,
+    opened: false,
+    Details: { title: null, description: null, course_code: null },
+  });
 
-  useEffect(() => {
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          console.log("response ok!");
-          return res.json();
-        } else {
-          throw new Error("response was not ok.");
-        }
-      })
-      .then((data) => {
-        const fetched_data = data;
-        set_courses_data(fetched_data);
-        console.log("fetched data:", fetched_data);
-      });
-  }, []);
-  // Execute this effect on startup
+  function setDetails(newDetails, id = null) {
+    // console.log("New Details:", newDetails);
+    setcourseDetails((prevDetails) => {
+      return {
+        id: id,
+        opened: prevDetails.id == id ? !prevDetails.opened : true,
+        Details: newDetails,
+      };
+    });
+  }
 
   return (
     <>
       <Navbar></Navbar>
       <main>
-        <ListCourses courses_data={courses_data}></ListCourses>
+        <ListCourses stateFunc={setDetails}></ListCourses>
+        {courseDetails.opened && (
+          <CourseDetail details={courseDetails.Details}></CourseDetail>
+        )}
+        <AddCourse></AddCourse>
       </main>
     </>
   );

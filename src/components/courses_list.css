@@ -29,26 +29,5 @@
 
 #table_action button {
   padding: 1px 2px;
-}
-
-.course_form {
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-  margin: 5%;
-  max-width: 600px;
-}
-
-.course_form input {
-  height: 30px;
-  border-radius: 10px;
-  -webkit-padding-start: 10px;
-  background-color:rgba(0, 0, 0,0.25);
-}
-
-.course_form button {
-  width: 200px;
-  height: 50px;
-  margin: auto;
-  background-color: royalblue;
+  margin: 2px;
 }
