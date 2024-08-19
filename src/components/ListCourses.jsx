@@ -2,23 +2,8 @@ import { useState, useEffect } from "react";
 import "./courses_list.css";
 
 function ListCourses(props) {
-  const [courses_data, set_courses_data] = useState([]);
-
-  function fetchCourses() {
-    const url = "http://127.0.0.1:8000/api/courses/";
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          console.log("response ok!");
-          return res.json();
-        } else {
-          throw new Error("response was not ok.");
-        }
-      })
-      .then((data) => {
-        set_courses_data(data);
-      });
-  }
+  const [openedCourse, setOpenedCourse] = useState({});
+  const [detailsHidden, setDetailsHidden] = useState(true);
 
   function openCourseDetail(courseID) {
     const url = `http://127.0.0.1:8000/api/courses/${courseID}/`;
@@ -31,14 +16,15 @@ function ListCourses(props) {
         }
       })
       .then((data) => {
-        props.stateFunc(
-          {
-            title: data.title,
-            description: data.description,
-            course_code: data.course_code,
-          },
-          courseID
-        );
+        setOpenedCourse({
+          title: data.title,
+          description: data.description,
+          course_code: data.course_code,
+          id: data.id,
+        });
+        setDetailsHidden((prev) => {
+          if (courseID == openedCourse.id) return !prev;
+        });
       });
   }
 
@@ -47,29 +33,24 @@ function ListCourses(props) {
     fetch(url, { method: "DELETE" }).then((res) => {
       if (res.status == 204) {
         console.log("Course Deleted!");
-        fetchCourses();
+        props.fetchCourses();
       } else {
         throw new Error("Course can't be deleted");
       }
     });
   }
 
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-  // Execute this effect on startup
-
   return (
     <>
       <h2>Available Courses:</h2>
       <div className="courses_table">
-        <ul className="table_heading">
+        <ul className="courses_table_heading">
           <li>Course Title</li>
           <li>Course Code</li>
           <li>Action</li>
         </ul>
-        {courses_data.map((element, index) => (
-          <ul key={index} className="table_entries">
+        {props.coursesData.map((element, index) => (
+          <ul key={index} className="courses_table_entries">
             <li>{element.title || "No title available"}</li>
             <li>{element.course_code || "No course code available"}</li>
             <li id="table_action">
@@ -120,6 +101,22 @@ function ListCourses(props) {
           </ul>
         ))}
       </div>
+      {!detailsHidden ? (
+        <div className="detailsPane">
+          <h2>Course Details:</h2>
+          <div className="course_details">
+            <p className="course_details--title">{openedCourse.title}</p>
+            <p className="course_details--code">
+              Code: {openedCourse.course_code}
+            </p>
+            <p className="course_details--desc">
+              Details: {openedCourse.description}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

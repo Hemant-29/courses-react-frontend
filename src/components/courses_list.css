@@ -4,8 +4,8 @@
   margin: 2%;
 }
 
-.table_heading,
-.table_entries {
+.courses_table_heading,
+.courses_table_entries {
   display: grid;
   grid-template-columns: 1fr 0.4fr 0.4fr;
   background-color: royalblue;
@@ -16,7 +16,7 @@
   align-items: center;
 }
 
-.table_entries {
+.courses_table_entries {
   background-color: white;
   color: black;
   height: 30px;
@@ -30,4 +30,13 @@
 #table_action button {
   padding: 1px 2px;
   margin: 2px;
+}
+
+.course_details {
+  margin: 2%;
+}
+
+.course_details--title {
+  font-size: 22px;
+  font-weight: 600;
 }

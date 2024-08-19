@@ -35,6 +35,7 @@ function AddCourse(props) {
       })
       .then(() => {
         console.log("form data: ", formData);
+        props.fetchCourses();
       });
   };
 

@@ -1,0 +1,32 @@
+.select_instances {
+  margin: 2%;
+}
+
+.instance_form {
+  display: flex;
+  gap: 15px;
+}
+
+.instances_table {
+  display: grid;
+  text-wrap: nowrap;
+  margin: 2%;
+}
+
+.instances_table_heading,
+.instances_table_entries {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr 0.4fr 0.4fr;
+  background-color: royalblue;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 40px;
+  align-items: center;
+}
+
+.instances_table_entries {
+  background-color: white;
+  color: black;
+  height: 30px;
+}
