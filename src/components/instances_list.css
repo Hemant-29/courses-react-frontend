@@ -30,3 +30,12 @@
   color: black;
   height: 30px;
 }
+
+.instance_details {
+  margin: 2%;
+}
+
+.instance_details--title {
+  font-size: 22px;
+  font-weight: 600;
+}

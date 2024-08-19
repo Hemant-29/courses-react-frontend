@@ -1,3 +1,7 @@
+.availableCourses {
+  margin: 30px 0px;
+}
+
 .courses_table {
   display: grid;
   text-wrap: nowrap;
@@ -30,6 +34,11 @@
 #table_action button {
   padding: 1px 2px;
   margin: 2px;
+}
+
+.detailsPane {
+  margin: 50px 0px;
+  box-sizing: border-box;
 }
 
 .course_details {

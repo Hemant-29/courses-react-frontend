@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import "./instances_list.css";
 
 function ListInstances(props) {
+  const [openedInstance, setOpenedInstance] = useState([]);
+  const [detailsHidden, setDetailsHidden] = useState(true);
   const [instancesData, setInstancesData] = useState([]);
   const [formData, setFormData] = useState({
     year: "",
@@ -16,6 +18,37 @@ function ListInstances(props) {
         [event.target.name]: event.target.value,
       };
     });
+  }
+
+  function openInstanceDetail(year, semester, courseID) {
+    const url = `http://127.0.0.1:8000/api/instances/${year}/${semester}/${courseID}`;
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Can't Open Instance Details");
+        }
+      })
+      .then((data) => {
+        if (data[0].id == openedInstance.id) {
+          setDetailsHidden((prev) => {
+            return !prev;
+          });
+        } else {
+          setDetailsHidden(false);
+        }
+
+        console.log("details Hidden:", detailsHidden);
+        setOpenedInstance({
+          title: data[0].course_title,
+          course_code: data[0].course_code,
+          semester: data[0].semester,
+          year: data[0].year,
+          id: data[0].id,
+        });
+        console.log("instance detail:", openedInstance);
+      });
   }
 
   function deleteInstance(year, semester, course_id) {
@@ -110,7 +143,11 @@ function ListInstances(props) {
             <li id="table_action">
               <button
                 onClick={() => {
-                  openCourseDetail(element.id);
+                  openInstanceDetail(
+                    element.year,
+                    element.semester,
+                    element.course
+                  );
                 }}
                 id="course_details"
               >
@@ -159,6 +196,20 @@ function ListInstances(props) {
           </ul>
         ))}
       </div>
+
+      {!detailsHidden ? (
+        <div className="detailsPane">
+          <h2>Course Details:</h2>
+          <div className="instance_details">
+            <p className="instance_details--title">{openedInstance.title}</p>
+            <p>Code: {openedInstance.course_code}</p>
+            <p>Year: {openedInstance.year}</p>
+            <p>Semester: {openedInstance.semester}</p>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

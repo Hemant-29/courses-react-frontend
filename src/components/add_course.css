@@ -1,3 +1,8 @@
+.addCourse{
+  margin: 50px 0px;
+  box-sizing: border-box;
+}
+
 .course_form {
   display: flex;
   gap: 20px;

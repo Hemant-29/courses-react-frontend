@@ -41,39 +41,41 @@ function AddCourse(props) {
 
   return (
     <>
-      <h2>Add Course: </h2>
-      <form onSubmit={submitForm} className="course_form">
-        <input
-          type="text"
-          name="title"
-          onChange={handleFormChange}
-          placeholder="Course Title"
-          value={formData.title}
-        />
-        <input
-          type="text"
-          name="course_code"
-          onChange={handleFormChange}
-          placeholder="Course Code"
-          value={formData.code}
-        />
-        <input
-          type="text"
-          name="description"
-          onChange={handleFormChange}
-          placeholder="Course Description"
-          value={formData.description}
-        />
-        <button>Add Course</button>
-        <div className="course_add_status">
-          <p>
-            {course_status != null &&
-              (course_status == true
-                ? "Course Added Sucessfully"
-                : "Error Adding Course")}
-          </p>
-        </div>
-      </form>
+      <div className="addCourse">
+        <h2>Add Course: </h2>
+        <form onSubmit={submitForm} className="course_form">
+          <input
+            type="text"
+            name="title"
+            onChange={handleFormChange}
+            placeholder="Course Title"
+            value={formData.title}
+          />
+          <input
+            type="text"
+            name="course_code"
+            onChange={handleFormChange}
+            placeholder="Course Code"
+            value={formData.code}
+          />
+          <input
+            type="text"
+            name="description"
+            onChange={handleFormChange}
+            placeholder="Course Description"
+            value={formData.description}
+          />
+          <button>Add Course</button>
+          <div className="course_add_status">
+            <p>
+              {course_status != null &&
+                (course_status == true
+                  ? "Course Added Sucessfully"
+                  : "Error Adding Course")}
+            </p>
+          </div>
+        </form>
+      </div>
     </>
   );
 }

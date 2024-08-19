@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import "./add_instance.css";
 
 function AddCourse(props) {
+  const [instance_status, set_instance_status] = useState(null);
   const [formData, setFormData] = useState({
-    title: "",
-    course_code: "",
-    description: "",
+    year: "",
+    semester: "",
+    course: "",
   });
 
-  const [course_status, set_Course_status] = useState(null);
   const handleFormChange = (event) => {
     setFormData((prevFormData) => {
       return {
@@ -20,22 +20,20 @@ function AddCourse(props) {
 
   const submitForm = (event) => {
     event.preventDefault();
-    console.log(formData);
 
-    const url = "http://localhost:8000/api/courses/";
+    const url = "http://localhost:8000/api/instances/";
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
       .then((response) => {
-        if (response.status == 201) set_Course_status(true);
-        else set_Course_status(false);
+        if (response.status == 201) set_instance_status(true);
+        else set_instance_status(false);
         return response.json();
       })
       .then(() => {
         console.log("form data: ", formData);
-        props.fetchCourses();
       });
   };
 
@@ -45,7 +43,8 @@ function AddCourse(props) {
       <div className="add_instances">
         <form onSubmit={submitForm} className="add_instance_form">
           <select
-            name="course_id"
+            required
+            name="course"
             id="course_select"
             onChange={handleFormChange}
           >
@@ -76,6 +75,17 @@ function AddCourse(props) {
             required
           />
           <button>Add Instance</button>
+          <section>
+            {instance_status != null ? (
+              instance_status == true ? (
+                <p>Instance is Added Sucessfully</p>
+              ) : (
+                <p>Error Adding Instance</p>
+              )
+            ) : (
+              <></>
+            )}
+          </section>
         </form>
       </div>
     </>
