@@ -50,6 +50,7 @@ function AddCourse(props) {
             onChange={handleFormChange}
             placeholder="Course Title"
             value={formData.title}
+            required
           />
           <input
             type="text"
@@ -57,6 +58,7 @@ function AddCourse(props) {
             onChange={handleFormChange}
             placeholder="Course Code"
             value={formData.code}
+            required
           />
           <input
             type="text"
@@ -64,6 +66,7 @@ function AddCourse(props) {
             onChange={handleFormChange}
             placeholder="Course Description"
             value={formData.description}
+            required
           />
           <button>Add Course</button>
           <div className="course_add_status">
